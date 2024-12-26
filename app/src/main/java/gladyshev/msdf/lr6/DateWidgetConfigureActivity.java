@@ -5,9 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.fonts.Font;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,25 +30,22 @@ public class DateWidgetConfigureActivity extends Activity
     public static final String PREF_FONT = "font";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    Spinner colorSpinner;
-    Spinner fontSpinner;
-
-    public static final Map<Integer, String> colors = new HashMap<Integer, String>() {{
-        put(1, "Красный");
-        put(2, "Желтый");
-        put(3, "Зеленый");
-        put(4, "Лиловый");
-        put(5, "Синий");
-        put(6, "Серый");
+    public static final Map<String, Integer> colors = new HashMap<String, Integer>() {{
+        put("Красный", Color.RED);
+        put("Желтый", Color.YELLOW);
+        put("Зеленый", Color.GREEN);
+        put("Лиловый", Color.MAGENTA);
+        put("Синий", Color.BLUE);
+        put("Серый", Color.GRAY);
     }};
 
-    public static final Map<Integer, String> fonts = new HashMap<Integer, String>() {{
-        put(1, "sans-serif");
-        put(2, "sans-serif-light");
-        put(3, "sans-serif-medium");
-        put(4, "sans-serif-condensed");
-        put(5, "sans-serif-black");
-        put(6, "serif");
+    public static final Map<String, Integer> fonts = new HashMap<String, Integer>() {{
+        put("sans-serif", R.id.date_tv1);
+        put("sans-serif-light", R.id.date_tv2);
+        put("sans-serif-medium", R.id.date_tv3);
+        put("sans-serif-condensed", R.id.date_tv4);
+        put("sans-serif-black", R.id.date_tv5);
+        put("serif", R.id.date_tv6);
     }};
 
     View.OnClickListener mOnClickListener = new View.OnClickListener()
@@ -54,12 +53,9 @@ public class DateWidgetConfigureActivity extends Activity
         public void onClick(View v)
         {
             final Context context = DateWidgetConfigureActivity.this;
-
-            Integer selectedColor = (int)binding.colorSpinner.getSelectedItemId();
-            Integer selectedFont = (int)binding.fontSpinner.getSelectedItemId();
             savePrefs(context, mAppWidgetId,
-                    new ArrayList<Integer>(colors.keySet()).get(selectedColor),
-                    new ArrayList<Integer>(fonts.keySet()).get(selectedFont));
+                    colors.get(binding.colorSpinner.getSelectedItem()),
+                    fonts.get(binding.fontSpinner.getSelectedItem()));
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             DateWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
@@ -88,8 +84,7 @@ public class DateWidgetConfigureActivity extends Activity
     static Integer getPrefs(Context context, int appWidgetId, String param)
     {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Integer i = prefs.getInt(PREF_PREFIX_KEY + appWidgetId + param, -1);
-        return i;
+        return prefs.getInt(PREF_PREFIX_KEY + appWidgetId + param, -1);
     }
 
     @Override
@@ -114,8 +109,8 @@ public class DateWidgetConfigureActivity extends Activity
             return;
         }
 
-        ArrayAdapter colorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, colors.values().toArray());
-        ArrayAdapter fontAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fonts.values().toArray());
+        ArrayAdapter colorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, colors.keySet().toArray());
+        ArrayAdapter fontAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fonts.keySet().toArray());
 
         colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fontAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -123,11 +118,12 @@ public class DateWidgetConfigureActivity extends Activity
         binding.colorSpinner.setAdapter(colorAdapter);
         binding.fontSpinner.setAdapter(fontAdapter);
 
-        Integer currentColor = getPrefs(this, mAppWidgetId, PREF_COLOR);
-        Integer currentFont = getPrefs(this, mAppWidgetId, PREF_FONT);
+        int currentColor = getPrefs(this, mAppWidgetId, PREF_COLOR);
+        int currentFont = getPrefs(this, mAppWidgetId, PREF_FONT);
 
-        binding.colorSpinner.setSelection(Arrays.asList(colors.values()).indexOf(currentColor));
-        binding.colorSpinner.setSelection(Arrays.asList(fonts.values()).indexOf(currentFont));
+        binding.colorSpinner.setSelection( currentColor == -1 ? 0 : new ArrayList<>(colors.values()).indexOf(currentColor));
+
+        binding.fontSpinner.setSelection( currentFont == -1 ? 0 : new ArrayList<>(fonts.values()).indexOf(currentFont));
 
     }
 }

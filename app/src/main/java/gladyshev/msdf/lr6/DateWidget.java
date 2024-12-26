@@ -76,34 +76,13 @@ public class DateWidget extends AppWidgetProvider
         for(int id : ids) views.setTextViewText(id, currentDate);
         for(int id : ids) views.setOnClickPendingIntent(id, PendingIntent.getActivity(context, id + 100 * appWidgetId, new Intent(context, DateWidgetConfigureActivity.class).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId), PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT));
         SharedPreferences prefs = context.getSharedPreferences(DateWidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        Integer color = prefs.getInt(DateWidgetConfigureActivity.PREF_PREFIX_KEY + appWidgetId + DateWidgetConfigureActivity.PREF_COLOR, -1);
-        final Map<Integer, Integer> colors = new HashMap<Integer, Integer>() {{
-            put(1, Color.RED);
-            put(2, Color.YELLOW);
-            put(3, Color.GREEN);
-            put(4, Color.MAGENTA);
-            put(5, Color.BLUE);
-            put(6, Color.GRAY);
-            put(-1, Color.GRAY);
-        }};
-        if(color > 0)
-            for (int id : ids) views.setTextColor(id, colors.get(color));
 
-        final Map<Integer, Integer> fonts = new HashMap<Integer, Integer>() {{
-            put(1, ids[0]);
-            put(2, ids[1]);
-            put(3, ids[2]);
-            put(4, ids[3]);
-            put(5, ids[4]);
-            put(6, ids[5]);
-            put(-1, ids[0]);
-        }};
+        Integer color = prefs.getInt(DateWidgetConfigureActivity.PREF_PREFIX_KEY + appWidgetId + DateWidgetConfigureActivity.PREF_COLOR, -1);
+        for (int id : ids) views.setTextColor(id, color == -1 ? Color.GRAY : color);
+
         Integer font = prefs.getInt(DateWidgetConfigureActivity.PREF_PREFIX_KEY + appWidgetId + DateWidgetConfigureActivity.PREF_FONT, -1);
-        if(font > 0)
-        {
-            for (int id : ids) views.setViewVisibility(id, View.INVISIBLE);
-            views.setViewVisibility(fonts.get(font), View.VISIBLE);
-        }
+        for (int id : ids) views.setViewVisibility(id, View.INVISIBLE);
+        views.setViewVisibility(font == -1 ? R.id.date_tv1 : font, View.VISIBLE);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -113,7 +92,6 @@ public class DateWidget extends AppWidgetProvider
     {
         setUpCurrentDate();
         for (int appWidgetId : appWidgetIds) updateAppWidget(context, appWidgetManager, appWidgetId);
-
     }
 
     @Override
@@ -123,7 +101,6 @@ public class DateWidget extends AppWidgetProvider
     public void onEnabled(Context context)
     {
         setUpCurrentDate();
-        Log.d("LOG", "onEnabled: " + currentDate);
     }
 
     @Override

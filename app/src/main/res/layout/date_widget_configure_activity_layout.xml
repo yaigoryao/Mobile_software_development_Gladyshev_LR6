@@ -8,6 +8,7 @@
     android:gravity="center">
 
     <Spinner
+        android:layout_margin="10dp"
         android:id="@+id/color_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +16,7 @@
         android:gravity="center"/>
 
     <Spinner
+        android:layout_margin="10dp"
         android:id="@+id/font_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
