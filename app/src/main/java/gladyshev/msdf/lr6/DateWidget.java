@@ -107,18 +107,16 @@ public class DateWidget extends AppWidgetProvider
     public void onDisabled(Context context) { }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent)
+    {
         super.onReceive(context, intent);
-
         if (Intent.ACTION_DATE_CHANGED.equalsIgnoreCase(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-
             ComponentName thisWidget = new ComponentName(context, DateWidget.class);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
             setUpCurrentDate();
             for (int appWidgetId : appWidgetIds)
                 updateAppWidget(context, AppWidgetManager.getInstance(context), appWidgetId);
-
         }
     }
 }
