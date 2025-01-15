@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "LR6"
 include(":app")
- 
+include(":dz1")

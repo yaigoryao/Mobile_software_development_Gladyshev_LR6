@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Хронометр</string>
+    <string name="info_textview_text">Настройки хронометра</string>
+    <string name="on_off_textview_text">ВКЛ./ВЫКЛ.</string>
+    <string name="pause_textview_text">Пауза</string>
+    <string name="timer_textview_text">Счетчик</string>
+</resources>
