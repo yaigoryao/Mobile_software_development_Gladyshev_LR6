@@ -28,9 +28,6 @@ import java.util.function.Consumer;
 
 public class ChronometerActivity extends AppCompatActivity
 {
-    private static final int INVALID_ID = -1;
-    public final static int TOTAL_TIMERS = 5;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -96,19 +93,15 @@ public class ChronometerActivity extends AppCompatActivity
 
     public static Consumer<Integer> createTextViewUpdater(int textViewId, final android.app.Activity activity)
     {
-        return new Consumer<Integer>()
+        return value ->
         {
-            @Override
-            public void accept(Integer value)
-            {
-                int hours = value / 3600;
-                int minutes = (value % 3600) / 60;
-                int seconds = value % 60;
-                String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-                TextView textView = activity.findViewById(textViewId);
-                if (textView != null) textView.setText(formattedTime);
+            int hours = value / 3600;
+            int minutes = (value % 3600) / 60;
+            int seconds = value % 60;
+            String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+            TextView textView = activity.findViewById(textViewId);
+            if (textView != null) textView.setText(formattedTime);
 
-            }
         };
     }
 
@@ -205,11 +198,13 @@ public class ChronometerActivity extends AppCompatActivity
     protected void onStop()
     {
         Log.d("TIMER_TEST", "onStop()");
-
         super.onStop();
         TimerManager.saveState(this);
-        Intent serviceIntent = new Intent(this, ChronometerService.class);
-        startForegroundService(serviceIntent);
+        if(TimerManager.isAnyTimerActive())
+        {
+            Intent serviceIntent = new Intent(this, ChronometerService.class);
+            startForegroundService(serviceIntent);
+        }
         if (serviceStoppedReceiver != null)
         {
             unregisterReceiver(serviceStoppedReceiver);

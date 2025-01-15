@@ -141,6 +141,11 @@ public class TimerManager {
         }
     }
 
+    public static boolean isAnyTimerActive()
+    {
+        return timers.values().stream().anyMatch(t -> t.isActive && !t.isPaused);
+    }
+
     public static class Timer
     {
         int id;
