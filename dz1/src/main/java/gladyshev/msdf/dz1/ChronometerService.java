@@ -23,7 +23,7 @@ public class ChronometerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        Log.d("TIMER_TEST", "Service Start");
+        Log.d("TIMER_TEST", "onStartCommand()");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             NotificationChannel channel = new NotificationChannel(
@@ -43,7 +43,7 @@ public class ChronometerService extends Service {
     @Override
     public void onDestroy()
     {
-        Log.d("TIMER_TEST", "Service Stop");
+        Log.d("TIMER_TEST", "onDestroy()");
         super.onDestroy();
         TimerManager.saveState(this);
 

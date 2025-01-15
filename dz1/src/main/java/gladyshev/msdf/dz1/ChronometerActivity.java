@@ -180,7 +180,7 @@ public class ChronometerActivity extends AppCompatActivity
     @Override
     protected void onStart()
     {
-        Log.d("TIMER_TEST", "Activity Start");
+        Log.d("TIMER_TEST", "onStart()");
         super.onStart();
         if (serviceStoppedReceiver == null)
         {
@@ -204,7 +204,7 @@ public class ChronometerActivity extends AppCompatActivity
     @Override
     protected void onStop()
     {
-        Log.d("TIMER_TEST", "Activity Stop");
+        Log.d("TIMER_TEST", "onStop()");
 
         super.onStop();
         TimerManager.saveState(this);

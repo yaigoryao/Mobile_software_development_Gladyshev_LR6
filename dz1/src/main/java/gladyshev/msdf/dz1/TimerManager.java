@@ -80,7 +80,7 @@ public class TimerManager {
     public static void saveState(Context context)
     {
         Log.d("TIMER_TEST", "=========================================");
-        Log.d("TIMER_TEST", "Saving state...");
+        Log.d("TIMER_TEST", "Сохранение состояния...");
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -98,14 +98,14 @@ public class TimerManager {
         {
             Log.d("TIMER_TEST", t.toString());
         }
-        Log.d("TIMER_TEST", "Saved!");
+        Log.d("TIMER_TEST", "Сохранено!");
 
     }
 
     public static void loadState(Context context, Map<Integer, Consumer<Integer>> consumerMap)
     {
         Log.d("TIMER_TEST", "=========================================");
-        Log.d("TIMER_TEST", "Loading state...");
+        Log.d("TIMER_TEST", "Загрузка состояния...");
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String serializedTimers = sharedPreferences.getString(TIMERS_KEY, "");
@@ -132,7 +132,7 @@ public class TimerManager {
         {
             Log.d("TIMER_TEST", t.toString());
         }
-        Log.d("TIMER_TEST", "Loaded!");
+        Log.d("TIMER_TEST", "Загружено!");
     }
 
     private static void initializeDefaultTimers() {
